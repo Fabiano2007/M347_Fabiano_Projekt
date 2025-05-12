@@ -46,13 +46,3 @@ Pusht das Image mit dem mariadb-Tag ins private Repository `m347`.
 
 ---
 
-## Wichtig
-- Ersetze `BENUTZERNAME` durch deinen echten Docker Hub Namen (z. B. `fabiano123`)
-- Achte darauf, dass du bei Docker eingeloggt bist: `docker login`
-- Stelle sicher, dass das Repository `m347` auf Docker Hub bereits existiert und du darauf Zugriff hast
-
----
-
-## Abgabe
-- Screenshot der Docker-Hub-Seite mit sichtbaren Tags `nginx` und `mariadb`
-- Diese Markdown-Datei mit Befehlen und Erklärungen
