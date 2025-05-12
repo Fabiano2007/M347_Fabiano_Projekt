@@ -25,13 +25,13 @@ EXPOSE 80
 cd kn02a-dockerfile
 
 # Image erstellen mit korrektem Repository-Tag für Docker Hub
-docker build -t fabiano123/m347:kn02a .
+docker build -t fabiano4392/m347:kn02a .
 
 # Push zu Docker Hub
-docker push fabiano123/m347:kn02a
+docker push fabiano4392/m347:kn02a
 
 # Container starten (Port 8082 → 80 im Container)
-docker run -d -p 8082:80 fabiano123/m347:kn02a
+docker run -d -p 8082:80 fabiano4392/m347:kn02a
 ```
 
 ---
@@ -40,9 +40,9 @@ docker run -d -p 8082:80 fabiano123/m347:kn02a
 
 | Befehl | Beschreibung |
 |--------|--------------|
-| `docker build -t fabiano123/m347:kn02a .` | Erstellt ein neues Image basierend auf dem Dockerfile im aktuellen Verzeichnis mit dem Tag `kn02a` im privaten Repository |
-| `docker push fabiano123/m347:kn02a` | Überträgt das Image ins private Docker Hub Repository `m347` |
-| `docker run -d -p 8082:80 fabiano123/m347:kn02a` | Startet einen Container aus dem Image im Hintergrund und mappt Port 8082 auf Port 80 im Container |
+| `docker build -t fabiano4392/m347:kn02a .` | Erstellt ein neues Image basierend auf dem Dockerfile im aktuellen Verzeichnis mit dem Tag `kn02a` im privaten Repository |
+| `docker push fabiano4392/m347:kn02a` | Überträgt das Image ins private Docker Hub Repository `m347` |
+| `docker run -d -p 8082:80 fabiano4392/m347:kn02a` | Startet einen Container aus dem Image im Hintergrund und mappt Port 8082 auf Port 80 im Container |
 
 ---
 
