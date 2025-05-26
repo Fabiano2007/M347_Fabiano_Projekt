@@ -92,11 +92,3 @@ docker exec -it busybox3 route
 ![Screenshot 2025-05-26 152214](https://github.com/user-attachments/assets/e133fb80-0df2-4194-a2a6-2a61c556d2bf)
 ![Screenshot 2025-05-26 160248](https://github.com/user-attachments/assets/58d470e5-7ce7-477f-b49b-bdd6569d89aa)
 
-
-## 📤 Abgaben
-
-- ✅ Screenshots von `ifconfig`/`docker inspect`
-- ✅ Screenshots der `ping`-Tests
-- ✅ Screenshots von `route`
-- ✅ Analyse der Verbindungen und Netzwerkgrenzen
-- ✅ Erklärung der Unterschiede (default bridge vs. benutzerdefiniert)
