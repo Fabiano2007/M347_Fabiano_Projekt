@@ -1,4 +1,4 @@
-# KN02 – Aufgabe A: Eigenes Netzwerk (100%)
+# KN03 – Aufgabe A: Eigenes Netzwerk (100%)
 
 ## 🎯 Ziel
 Untersuchung von Docker-Container-Netzwerken anhand von BusyBox-Containern im Default-Netzwerk und einem benutzerdefinierten Netzwerk `m347-net`.
