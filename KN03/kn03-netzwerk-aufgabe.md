@@ -84,6 +84,15 @@ docker exec -it busybox3 route
 
 ---
 
+![Screenshot 2025-05-26 150855](https://github.com/user-attachments/assets/564f91aa-2706-4c40-953d-fdb4feb93348)
+![Screenshot 2025-05-26 150905](https://github.com/user-attachments/assets/163f08a8-5107-4a35-b4ee-a36e088b55f9)
+![Screenshot 2025-05-26 150919](https://github.com/user-attachments/assets/5e592564-d3d2-483c-a75f-ac8fce068a35)
+![Screenshot 2025-05-26 150927](https://github.com/user-attachments/assets/d9c23d55-3a9e-4480-bcb5-710963010852)
+![Screenshot 2025-05-26 151247](https://github.com/user-attachments/assets/c355312a-2270-4ef2-8916-967916770659)
+![Screenshot 2025-05-26 152214](https://github.com/user-attachments/assets/e133fb80-0df2-4194-a2a6-2a61c556d2bf)
+![Screenshot 2025-05-26 160248](https://github.com/user-attachments/assets/58d470e5-7ce7-477f-b49b-bdd6569d89aa)
+
+
 ## 📤 Abgaben
 
 - ✅ Screenshots von `ifconfig`/`docker inspect`
