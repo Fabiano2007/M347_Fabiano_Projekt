@@ -1,21 +1,5 @@
 # Aufgabe KN02b – Dockerfile II
 
-## Ziel
-Erstellung eines Datenbank-Containers (MariaDB) und eines Web-Containers (PHP mit Apache), die über Docker miteinander vernetzt sind.
-
----
-
-## 📁 Ordnerstruktur
-```
-kn02b-db/
-  Dockerfile
-kn02b-web/
-  Dockerfile
-  info.php
-  db.php
-```
-
----
 
 ## 🔹 Datenbank-Container
 
