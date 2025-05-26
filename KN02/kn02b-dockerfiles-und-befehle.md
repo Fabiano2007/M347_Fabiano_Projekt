@@ -34,8 +34,8 @@ EXPOSE 3306
 ### ⚙️ Befehle für Build & Run
 ```bash
 cd kn02b-db
-docker build -t fabiano123/m347:kn02b-db .
-docker run -d --name kn02b-db fabiano123/m347:kn02b-db
+docker build -t fabiano4392/m347:kn02b-db .
+docker run -d --name kn02b-db fabiano4392/m347:kn02b-db
 ```
 
 ---
@@ -75,13 +75,13 @@ echo "Verbindung erfolgreich!";
 ### ⚙️ Befehle für Build & Run
 ```bash
 cd kn02b-web
-docker build -t fabiano123/m347:kn02b-web .
+docker build -t fabiano4392/m347:kn02b-web .
 
 # Vor dem Start sicherstellen, dass alter Container gelöscht ist
 docker stop kn02b-web
 docker rm kn02b-web
 
-docker run -d --name kn02b-web --link kn02b-db:kn02b-db -p 8083:80 fabiano123/m347:kn02b-web
+docker run -d --name kn02b-web --link kn02b-db:kn02b-db -p 8083:80 fabiano4392/m347:kn02b-web
 ```
 
 ---
@@ -98,8 +98,8 @@ docker run -d --name kn02b-web --link kn02b-db:kn02b-db -p 8083:80 fabiano123/m3
 ## 📤 Push der Images
 
 ```bash
-docker push fabiano123/m347:kn02b-db
-docker push fabiano123/m347:kn02b-web
+docker push fabiano4392/m347:kn02b-db
+docker push fabiano4392/m347:kn02b-web
 ```
 
 ---
