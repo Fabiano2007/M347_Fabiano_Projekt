@@ -53,3 +53,9 @@ docker run -d -p 8082:80 fabiano4392/m347:kn02a
 - [x] Verwendete Docker-Befehle mit Tag und Build
 - [x] Screenshot von Docker Desktop mit dem Image `kn02a`
 - [x] Screenshot der HTML-Seite unter `http://localhost:8082/helloworld.html`
+
+![Screenshot 2025-05-26 132158](https://github.com/user-attachments/assets/480cc7fa-74e7-4306-b22b-3d1ba8610d72)
+
+![Screenshot 2025-05-26 132449](https://github.com/user-attachments/assets/f3b2b037-71fa-4ccd-85aa-9c6194ad4e15)
+
+
