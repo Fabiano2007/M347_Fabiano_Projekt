@@ -110,3 +110,28 @@ DNS-Auflösung funktioniert nicht (z. B. ping busybox3 von busybox1)
 
 Routing ist unterbunden (standardmässig)
 
+
+
+
+🧾 Schlussfolgerung:
+Docker-Netzwerke sind standardmässig voneinander isoliert
+
+Nur Container im selben Netzwerk können untereinander kommunizieren
+
+DNS (Name-zu-IP-Auflösung) funktioniert nur innerhalb eines Netzwerks
+
+→ Wer Container gezielt verbinden will, muss sie explizit im selben Netzwerk starten oder Docker Compose / benutzerdefinierte Netzwerke nutzen.
+
+
+
+
+
+❓ In welchem Netzwerk befanden sich die beiden Container?
+→ In einem gemeinsamen benutzerdefinierten Netzwerk, z. B. m347-net.
+
+❓ Wieso konnten sie miteinander reden?
+→ Weil sie:
+
+im selben Netzwerk waren
+
+ein gemeinsames Gateway nutzten
