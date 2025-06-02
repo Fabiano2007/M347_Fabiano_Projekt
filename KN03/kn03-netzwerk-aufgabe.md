@@ -92,3 +92,21 @@ docker exec -it busybox3 route
 ![Screenshot 2025-05-26 152214](https://github.com/user-attachments/assets/e133fb80-0df2-4194-a2a6-2a61c556d2bf)
 ![Screenshot 2025-05-26 160248](https://github.com/user-attachments/assets/58d470e5-7ce7-477f-b49b-bdd6569d89aa)
 
+✅ Gemeinsamkeiten:
+Container im gleichen Netzwerk haben:
+
+gleichen Gateway
+
+können sich per Name und IP erreichen
+
+Standardmässig ist jede Bridge-Umgebung isoliert
+
+❌ Unterschiede:
+Container in verschiedenen Netzwerken:
+
+können sich nicht pingen
+
+DNS-Auflösung funktioniert nicht (z. B. ping busybox3 von busybox1)
+
+Routing ist unterbunden (standardmässig)
+
