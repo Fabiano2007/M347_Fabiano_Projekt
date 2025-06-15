@@ -74,3 +74,11 @@ docker exec -it busybox3 ping -c 2 172.17.0.2
 - In KN03 wurde bewusst zwischen default und benutzerdefiniertem Netzwerk unterschieden, um die Isolierung sichtbar zu machen.
 - Dies dient der **Netzwerksicherheit** und der **gezielten Kommunikation** über docker networks.
 
+# Screenshots
+
+![image](https://github.com/user-attachments/assets/f5d8186e-91ef-4558-95e5-5b33e6694a0f)
+![image](https://github.com/user-attachments/assets/438fb6ab-08d9-4123-a951-eec3d4db8f40)
+![image](https://github.com/user-attachments/assets/9fa00dec-9d20-4abe-99ef-5dbd0c0d8762)
+![image](https://github.com/user-attachments/assets/032c2522-a73e-458b-93fd-66106a7d5d01)
+
+
