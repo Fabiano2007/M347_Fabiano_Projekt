@@ -1,137 +1,76 @@
-# KN03 – Aufgabe A: Eigenes Netzwerk (100%)
+# KN03: Netzwerk, Sicherheit
 
-## 🎯 Ziel
-Untersuchung von Docker-Container-Netzwerken anhand von BusyBox-Containern im Default-Netzwerk und einem benutzerdefinierten Netzwerk `m347-net`.
+## A) Eigenes Netzwerk (100%)
+
+### IP-Adressen der Container
+
+| Container | Netzwerk                | IP-Adresse |
+| --------- | ----------------------- | ---------- |
+| busybox1  | default (bridge)        | 172.17.0.2 |
+| busybox2  | default (bridge)        | 172.17.0.3 |
+| busybox3  | benutzerdefiniert (tbz) | 172.28.0.2 |
+| busybox4  | benutzerdefiniert (tbz) | 172.28.0.3 |
 
 ---
 
-## 📦 Netzwerkaufbau
+### Ping-Ergebnisse
 
-### 🔧 Netzwerk erstellen
+| Von ↔ Nach                         | Ergebnis       | Bemerkung                          |
+| ---------------------------------- | -------------- | ---------------------------------- |
+| busybox1 → busybox2 (172.17.0.3)   | Erfolgreich    | gleiches Netzwerk (default bridge) |
+| busybox1 → busybox3 (172.28.0.2)   | Fehlgeschlagen | andere Netzwerke                   |
+| busybox3 → busybox4 (Name oder IP) | Erfolgreich    | gleiches benutzerdef. Netzwerk     |
+| busybox3 → busybox1 (172.17.0.2)   | Fehlgeschlagen | andere Netzwerke                   |
+
+---
+
+### Analyse
+
+- Container im **gleichen Netzwerk** können sich erfolgreich per IP erreichen.
+- Nur Container im **benutzerdefinierten Netzwerk** (tbz) können sich **auch per Name** ansprechen (DNS funktioniert).
+- Container aus **unterschiedlichen Netzwerken** (default vs. tbz) können **nicht** miteinander kommunizieren.
+
+---
+
+### Befehlssammlung
+
+**Netzwerk erstellen:**
+
 ```bash
-docker network create --subnet=172.18.0.0/16 m347-net
+docker network create --subnet=172.28.0.0/16 tbz
 ```
 
----
+**Container starten:**
 
-### 🧱 Container starten
-
-#### Default Bridge Netzwerk:
 ```bash
 docker run -dit --name busybox1 busybox
 docker run -dit --name busybox2 busybox
+docker run -dit --name busybox3 --network tbz busybox
+docker run -dit --name busybox4 --network tbz busybox
 ```
 
-#### Benutzerdefiniertes Netzwerk:
+**IP herausfinden (alternativ zu grep):**
+
 ```bash
-docker run -dit --name busybox3 --net m347-net --ip 172.18.0.3 busybox
-docker run -dit --name busybox4 --net m347-net --ip 172.18.0.4 busybox
+docker inspect busybox1
+```
+
+(und IP manuell in "IPAddress" im JSON suchen)
+
+**Ping ausführen:**
+
+```bash
+docker exec -it busybox1 ping -c 2 172.17.0.3
+docker exec -it busybox1 ping -c 2 172.28.0.2
+docker exec -it busybox3 ping -c 2 busybox4
+docker exec -it busybox3 ping -c 2 172.17.0.2
 ```
 
 ---
 
-## 🧪 Netzwerkdiagnose
+### Fazit bezogen auf KN02
 
-### 🔍 IP-Adressen prüfen
-```bash
-docker exec -it busybox1 ifconfig
-docker exec -it busybox2 ifconfig
-docker exec -it busybox3 ifconfig
-docker exec -it busybox4 ifconfig
-```
+- In KN02 waren alle Container im **selben Netzwerk**, daher war Kommunikation problemlos.
+- In KN03 wurde bewusst zwischen default und benutzerdefiniertem Netzwerk unterschieden, um die Isolierung sichtbar zu machen.
+- Dies dient der **Netzwerksicherheit** und der **gezielten Kommunikation** über docker networks.
 
-Alternativ:
-```bash
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' busybox1
-```
-
----
-
-### 📡 Verbindungstest (Ping)
-
-#### Von `busybox1`:
-```bash
-ping busybox2              # ❌ bad address
-ping busybox3              # ❌ bad address
-ping 172.18.0.3            # ❌ 100% packet loss
-```
-
-#### Von `busybox3`:
-```bash
-ping busybox4              # ✅ 0% packet loss (gleiches Netzwerk)
-ping busybox1              # ❌ bad address
-ping 172.17.0.2            # ❌ 100% packet loss
-```
-
----
-
-## 🌐 Default Gateway prüfen
-```bash
-docker exec -it busybox1 route
-docker exec -it busybox3 route
-```
-
----
-
-## ✅ Analyse & Fazit
-
-| Test                                | Ergebnis         | Erklärung |
-|-------------------------------------|------------------|-----------|
-| busybox3 → busybox4 (Name)          | ✅ Erfolgreich   | Beide im `m347-net` |
-| busybox1 → busybox2 (Name)          | ❌ bad address   | Kein DNS im default bridge |
-| busybox1 → 172.18.0.3               | ❌ Kein Zugriff  | Kein Routing zwischen default und custom network |
-| busybox3 → 172.17.0.2               | ❌ Kein Zugriff  | Kein Routing zwischen Netzwerken |
-
----
-
-![Screenshot 2025-05-26 150855](https://github.com/user-attachments/assets/564f91aa-2706-4c40-953d-fdb4feb93348)
-![Screenshot 2025-05-26 150905](https://github.com/user-attachments/assets/163f08a8-5107-4a35-b4ee-a36e088b55f9)
-![Screenshot 2025-05-26 150919](https://github.com/user-attachments/assets/5e592564-d3d2-483c-a75f-ac8fce068a35)
-![Screenshot 2025-05-26 150927](https://github.com/user-attachments/assets/d9c23d55-3a9e-4480-bcb5-710963010852)
-![Screenshot 2025-05-26 151247](https://github.com/user-attachments/assets/c355312a-2270-4ef2-8916-967916770659)
-![Screenshot 2025-05-26 152214](https://github.com/user-attachments/assets/e133fb80-0df2-4194-a2a6-2a61c556d2bf)
-![Screenshot 2025-05-26 160248](https://github.com/user-attachments/assets/58d470e5-7ce7-477f-b49b-bdd6569d89aa)
-
-✅ Gemeinsamkeiten:
-Container im gleichen Netzwerk haben:
-
-gleichen Gateway
-
-können sich per Name und IP erreichen
-
-Standardmässig ist jede Bridge-Umgebung isoliert
-
-❌ Unterschiede:
-Container in verschiedenen Netzwerken:
-
-können sich nicht pingen
-
-DNS-Auflösung funktioniert nicht (z. B. ping busybox3 von busybox1)
-
-Routing ist unterbunden (standardmässig)
-
-
-
-
-🧾 Schlussfolgerung:
-Docker-Netzwerke sind standardmässig voneinander isoliert
-
-Nur Container im selben Netzwerk können untereinander kommunizieren
-
-DNS (Name-zu-IP-Auflösung) funktioniert nur innerhalb eines Netzwerks
-
-→ Wer Container gezielt verbinden will, muss sie explizit im selben Netzwerk starten oder Docker Compose / benutzerdefinierte Netzwerke nutzen.
-
-
-
-
-
-❓ In welchem Netzwerk befanden sich die beiden Container?
-→ In einem gemeinsamen benutzerdefinierten Netzwerk, z. B. m347-net.
-
-❓ Wieso konnten sie miteinander reden?
-→ Weil sie:
-
-im selben Netzwerk waren
-
-ein gemeinsames Gateway nutzten
