@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  m347-kn04a-db:
+    image: mariadb:latest
+    container_name: m347-kn04a-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: schule
+      MYSQL_USER: webuser
+      MYSQL_PASSWORD: webpw
+    networks:
+      m347-net:
+        ipv4_address: 172.10.5.3
+
+  m347-kn04a-web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: m347-kn04a-web
+    depends_on:
+      - m347-kn04a-db
+    networks:
+      m347-net:
+        ipv4_address: 172.10.5.4
+    ports:
+      - "8085:80"
+
+networks:
+  m347-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.10.0.0/16
+          ip_range: 172.10.5.0/24
+          gateway: 172.10.5.254
