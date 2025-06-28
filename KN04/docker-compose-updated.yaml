@@ -1,0 +1,36 @@
+networks:
+  kn04-netz:
+    driver: bridge
+    ipam:
+      config:
+      - gateway: 172.10.5.254
+        ip_range: 172.10.5.0/24
+        subnet: 172.10.0.0/16
+services:
+  m347-kn04b-db:
+    container_name: m347-kn04b-db
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: testuser
+    image: fabiano4392/m347:kn04b-db
+    networks:
+      kn04-netz:
+        ipv4_address: 172.10.5.10
+  m347-kn04b-web:
+    container_name: m347-kn04b-web
+    depends_on:
+    - m347-kn04b-db
+    environment:
+      DB_HOST: m347-kn04b-db
+      DB_NAME: testdb
+      DB_PASS: root
+      DB_USER: root
+    image: fabiano4392/m347:kn04b-web
+    networks:
+      kn04-netz:
+        ipv4_address: 172.10.5.11
+    ports:
+    - 80:80
+version: '3.9'

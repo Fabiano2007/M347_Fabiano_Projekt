@@ -1,0 +1,85 @@
+#cloud-config
+
+users:
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin, docker
+    home: /home/ubuntu
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCUBo+qnNu5xxM9vfz4C04M36FHxHNrEMdm5TkFj1/SfVtqunlUOeMpu7nFCZZKnX8HYwf/MkjcBiTYAgncxku8grwl6XuW/pcvmb6/ghSIaw4xtRRSzit7omqJ5d8kXB3+Nd1aaMHsjfly4nkaqswhySVXQqr8Hw6DbWVw8jLLVKEE+5NZHY33hJkhJwK4blCllsGpmQaKi1qxjsN0hZOWNK01iJAydwD8t2xJ0NOYbq8Qas5IyPnRN7SPxvEhIP6WLQ6Ym6Dmf8FwNW1cHLTKabgjzt5f/HKUkKS89dPd3fn4nnFli1BOMECGUIvVlOw2pQNri7+04OOfn2FGlqr5
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcjKBboOcO6tkyMJlwEzKxaxseKjFr+5+7RNUOBkerjsY5Z3wRCqasSuRXJ7OlAA6PuhIMMAb3nKBZvXEOFMjBIuuCSuYH/pz6naYG85iSlBUojpm0aD8nf5ZKcQrA3fwc+mHO3BtjEN0ZbbVs2dd2O1tF/R0Nwsn9vE3Cd5ZlXlrkMgHdmy3r+Vsj/lK2GjTAfN+lyIEY/W/mj0ON0KGtO9NlX62lYAOS/rKOaUNb51b8EWbFJHOUkxI6dtETjTwWusNXFneUcUWGy0eUKmpRK/duOT0rVe+vND3bMqaI8ALv7YA7yK9xZH0BV0DHGYxcdkTydQ1p81QfyNr+PmOF
+
+ssh_pwauth: false
+disable_root: false
+
+package_update: true
+package_upgrade: true
+packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  - unattended-upgrades
+
+system_info:
+  default_user:
+    groups: [docker]
+
+write_files:
+  - path: /home/ubuntu/docker-compose.yml
+    permissions: "0644"
+    content: |
+      version: '3.9'
+      services:
+        m347-kn04b-db:
+          image: fabiano4392/m347:kn04b-db
+          container_name: m347-kn04b-db
+          environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: testdb
+            MYSQL_USER: testuser
+            MYSQL_PASSWORD: testpass
+          networks:
+            kn04-netz:
+              ipv4_address: 172.10.5.10
+
+        m347-kn04b-web:
+          image: fabiano4392/m347:kn04b-web
+          container_name: m347-kn04b-web
+          ports:
+            - "80:80"
+          depends_on:
+            - m347-kn04b-db
+          networks:
+            kn04-netz:
+              ipv4_address: 172.10.5.11
+          environment:
+            DB_HOST: m347-kn04b-db
+            DB_NAME: testdb
+            DB_USER: root
+            DB_PASS: root
+
+      networks:
+        kn04-netz:
+          driver: bridge
+          ipam:
+            config:
+              - subnet: 172.10.0.0/16
+                ip_range: 172.10.5.0/24
+                gateway: 172.10.5.254
+
+runcmd:
+  - mkdir -p /etc/apt/keyrings
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+  - echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+  - apt-get update
+  - apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+  - systemctl enable docker
+  - systemctl start docker
+  - chown ubuntu:ubuntu /home/ubuntu/docker-compose.yml
+  - cd /home/ubuntu
+  - sudo -u ubuntu docker compose up -d --build
+
+final_message: "Cloud-Init abgeschlossen"
