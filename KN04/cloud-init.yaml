@@ -55,11 +55,6 @@ write_files:
           networks:
             kn04-netz:
               ipv4_address: 172.10.5.11
-          environment:
-            DB_HOST: m347-kn04b-db
-            DB_NAME: testdb
-            DB_USER: root
-            DB_PASS: root
 
       networks:
         kn04-netz:
